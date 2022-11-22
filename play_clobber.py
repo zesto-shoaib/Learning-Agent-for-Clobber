@@ -120,33 +120,69 @@ update_belief(beliefs, file_path+'beliefs'+'_'+dir_name+'.txt')  # belief values
 
 
 end = 0
-
 turn = random.choice(['a', 'b'])
 
-while end == 0:
-    end = 1
-    print(turn + ' : ' + initial_pos)
-    if turn == 'a':
-        check, initial_pos = check_symmetry(initial_pos, possible_moves_a)
-    elif turn == 'b':
-        check, initial_pos = check_symmetry(initial_pos, possible_moves_b)
+play = input('Would you like to play against the bot?(Y/N)\n')
 
-    if turn == 'a' and check:
-        initial_pos = make_string(
-            possible_moves_a[initial_pos][weighted_average(possible_moves_a[initial_pos], beliefs, turn)])
-        end = 0
-        turn = 'b'
+if play == 'Y':
+    human = input('Would you like to play as A or B?(A/B)')
+    while end == 0:
+        end = 1
+        print(turn + ' : ' + initial_pos)
+        if turn == 'a':
+            if human == 'A':
+                check, initial_pos = check_symmetry(initial_pos, possible_moves_a)
+                if check:
+                    initial_pos = input()
+                    end = 0
+                    turn = 'b'
+            else:
+                check, initial_pos = check_symmetry(initial_pos, possible_moves_a)
+                if check:
+                    initial_pos = make_string(
+                        possible_moves_a[initial_pos][weighted_average(possible_moves_a[initial_pos], beliefs, turn)])
+                    end = 0
+                    turn = 'b'
+        elif turn == 'b':
+            if human == 'B':
+                check, initial_pos = check_symmetry(initial_pos, possible_moves_b)
+                if check:
+                    initial_pos = input()
+                    end = 0
+                    turn = 'a'
+            else:
+                check, initial_pos = check_symmetry(initial_pos, possible_moves_b)
+                if check:
+                    initial_pos = make_string(
+                        possible_moves_b[initial_pos][weighted_average(possible_moves_b[initial_pos], beliefs, turn)])
+                    end = 0
+                    turn = 'a'
 
-    elif turn == 'b' and check:
-        initial_pos = make_string(
-            possible_moves_b[initial_pos][weighted_average(possible_moves_b[initial_pos], beliefs, turn)])
-        end = 0
-        turn = 'a'
+else:
+    while end == 0:
+        end = 1
+        print(turn + ' : ' + initial_pos)
+        if turn == 'a':
+            check, initial_pos = check_symmetry(initial_pos, possible_moves_a)
+        elif turn == 'b':
+            check, initial_pos = check_symmetry(initial_pos, possible_moves_b)
+
+        if turn == 'a' and check:
+            initial_pos = make_string(
+                possible_moves_a[initial_pos][weighted_average(possible_moves_a[initial_pos], beliefs, turn)])
+            end = 0
+            turn = 'b'
+
+        elif turn == 'b' and check:
+            initial_pos = make_string(
+                possible_moves_b[initial_pos][weighted_average(possible_moves_b[initial_pos], beliefs, turn)])
+            end = 0
+            turn = 'a'
 
 if turn == 'a':
-    print('b WINS')
+    print('B WINS')
 else:
-    print('a WINS')
+    print('A WINS')
 
 
 
